@@ -1,14 +1,18 @@
-import 'package:bytebank2/database/app_database.dart';
+import 'package:bytebank2/database/dao/contact_dao.dart';
 import 'package:bytebank2/models/contact.dart';
 import 'package:bytebank2/screens/contact_form.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatefulWidget {
+
   @override
   _ContactsListState createState() => _ContactsListState();
 }
 
 class _ContactsListState extends State<ContactsList> {
+
+  final ContactDao _dao = ContactDao();
+
   @override
   Widget build(BuildContext context) {
     //contacts.add(Contact(0, 'Lucas', 200)); Adicionando um contato para teste
@@ -18,7 +22,7 @@ class _ContactsListState extends State<ContactsList> {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: [],
-        future: findAll(),
+        future: _dao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -29,9 +33,13 @@ class _ContactsListState extends State<ContactsList> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [CircularProgressIndicator(), Text('Loading')]),
+                    children: [
+                      CircularProgressIndicator(),
+                      Text('Loading'),
+                    ],
+                ),
               );
-              break;
+              //break;
             case ConnectionState.active:
               //Traz o que ja foi carregado
               break;
@@ -44,7 +52,7 @@ class _ContactsListState extends State<ContactsList> {
                 },
                 itemCount: contacts.length,
               );
-              break;
+              //break;
           }
           return Text('Unknown error');
         },
