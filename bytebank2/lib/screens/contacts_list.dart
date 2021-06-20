@@ -3,9 +3,12 @@ import 'package:bytebank2/models/contact.dart';
 import 'package:bytebank2/screens/contact_form.dart';
 import 'package:flutter/material.dart';
 
-class ContactsList extends StatelessWidget {
+class ContactsList extends StatefulWidget {
+  @override
+  _ContactsListState createState() => _ContactsListState();
+}
 
-
+class _ContactsListState extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
     //contacts.add(Contact(0, 'Lucas', 200)); Adicionando um contato para teste
@@ -15,10 +18,9 @@ class ContactsList extends StatelessWidget {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: [],
-        future:  findAll(),
+        future: findAll(),
         builder: (context, snapshot) {
-          switch(snapshot.connectionState){
-
+          switch (snapshot.connectionState) {
             case ConnectionState.none:
               //Significa que o future ainda não foi executado
               break;
@@ -27,10 +29,7 @@ class ContactsList extends StatelessWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      Text('Loading')
-                    ]),
+                    children: [CircularProgressIndicator(), Text('Loading')]),
               );
               break;
             case ConnectionState.active:
@@ -47,20 +46,20 @@ class ContactsList extends StatelessWidget {
               );
               break;
           }
-           return Text('Unknown error');
+          return Text('Unknown error');
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(
-                MaterialPageRoute(
-                  builder: (context) => ContactForm(),
-                ),
+        onPressed:() {
+          Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => ContactForm()
               )
-              .then(
-                (newContact) => debugPrint(newContact.toString()),
-              );
+          ).then((value) {
+            setState(() {
+              widget.createState();
+            });
+          });
         },
         child: Icon(
           Icons.add,
