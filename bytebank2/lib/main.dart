@@ -7,11 +7,12 @@ import 'database/app_database.dart';
 
 void main() {
   runApp(BytebankApp());
-    findAll().then((contacts) => debugPrint(contacts.toString()));
+
+    //findAll().then((contacts) => debugPrint(contacts.toString()));
 }
 
 class BytebankApp extends StatelessWidget {
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
